@@ -142,7 +142,14 @@ def formatFolder(folderName,create=False):
     except OSError:
         print('folder %s does not exist' % (folderName))
         if create:
-            os.system('mkdir %s' % (folderName))
+            try:
+                #os.system('mkdir %s' % (folderName))
+                os.mkdir(folderName)
+                os.system('ls')
+                
+            except OSError:
+                print('failed')
+                os.system('ls')
             return folderName
         else:
                     
@@ -632,6 +639,7 @@ class Bam:
         command = 'samtools flagstat %s' % (self._bam)
         stats = subprocess.Popen(command,stdin = subprocess.PIPE,stderr = subprocess.PIPE,stdout = subprocess.PIPE,shell = True)
         statLines = stats.stdout.readlines()
+        print(stats)
         stats.stdout.close()
         if readType == 'mapped':
             for line in statLines:

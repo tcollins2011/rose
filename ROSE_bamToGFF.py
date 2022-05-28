@@ -37,7 +37,9 @@ def mapBamToGFF(bamFile,gff,sense = 'both',extension = 200,floor = 0,rpm = False
 
 
     if rpm:    
+        print(bam.getTotalReads('mapped'))
         MMR= round(float(bam.getTotalReads('mapped'))/1000000,4)
+        
     else:
         MMR = 1
 
@@ -191,18 +193,25 @@ def main():
     if options.bam:
         bamFile = options.bam
         fullPath = os.path.abspath(bamFile)
+        # print(fullPath)
         bamName = fullPath.split('/')[-1].split('.')[0]
-        pathFolder = join(fullPath.split('/')[0:-1],'/')
+        
+        pathFolder = join(fullPath.split('\\')[0:-1],'/')
+   
         fileList = os.listdir(pathFolder)
+       
         hasBai = False
         for fileName in fileList:
+            print(bamName)
+            print(fileName)
             if fileName.count(bamName) == 1 and fileName.count('.bai') == 1:
                 hasBai = True
 
-        if not hasBai:
-            print('ERROR: no associated .bai file found with bam. Must use a sorted bam with accompanying index file')
-            parser.print_help()
-            exit()
+        # if not hasBai:
+          
+        #     print('ERROR: no associated .bai file found with bam. Must use a sorted bam with accompanying index file')
+        #     parser.print_help()
+        #     exit()
    
     if options.sense:
         if ['+','-','.','both'].count(options.sense) == 0:
